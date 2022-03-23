@@ -3,4 +3,8 @@
     <string name="name_lbl">Name</string>
     <string name="address_lbl">Address</string>
     <string name="save_btn">Save</string>
+    <string name="type_lbl">Type</string>
+    <string name="takeout">Take-Out</string>
+    <string name="sitdown">Sit-Down</string>
+    <string name="delivery">Delivery</string>
 </resources>
