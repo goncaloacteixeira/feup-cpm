@@ -7,4 +7,6 @@
     <string name="takeout">Take-Out</string>
     <string name="sitdown">Sit-Down</string>
     <string name="delivery">Delivery</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

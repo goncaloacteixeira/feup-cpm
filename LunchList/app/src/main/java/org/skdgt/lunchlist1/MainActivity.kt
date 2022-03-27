@@ -3,13 +3,13 @@ package org.skdgt.lunchlist1
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 
 class MainActivity : AppCompatActivity() {
-    private val TAG = "MainActivity"
     private val rests = arrayListOf<Restaurant>()
 
     inner class RestaurantAdapter(ctx: Context, rid: Int, objs: ArrayList<Restaurant>): ArrayAdapter<Restaurant>(ctx, rid, objs) {
@@ -30,42 +30,35 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar?.setIcon(R.drawable.rest_icon)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         setContentView(R.layout.activity_main)
 
-        val adapter by lazy { RestaurantAdapter(this, android.R.layout.simple_list_item_1, rests) }
-        val restaurantList = findViewById<ListView>(R.id.restaurants_list)
+        val tabLayout = findViewById<TabLayout>(R.id.tabLayout)
+        val viewPager = findViewById<ViewPager>(R.id.viewPager)
 
-        restaurantList.adapter = adapter
+        tabLayout.addTab(tabLayout.newTab().setText("List"))
+        tabLayout.addTab(tabLayout.newTab().setText("Details"))
+        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
 
-        restaurantList.setOnItemClickListener { adapterView, view, i, l ->
-            Log.d(TAG, "onItemClickListener: ${adapter.getItem(i)}")
-            val restaurant = adapter.getItem(i)
-            findViewById<EditText>(R.id.name_edt).setText(restaurant?.name)
-            findViewById<EditText>(R.id.address_edt).setText(restaurant?.address)
-            findViewById<RadioGroup>(R.id.type_grp).check(restaurant!!.type)
-        }
+        val listAdapter by lazy { RestaurantAdapter(this, android.R.layout.simple_list_item_1, rests) }
+        val adapter = ViewPagerAdapter(this, supportFragmentManager, tabLayout!!.tabCount, listAdapter)
+        viewPager.adapter = adapter
 
-        findViewById<Button>(R.id.save_btn).setOnClickListener {
-            val name = findViewById<EditText>(R.id.name_edt).text.toString()
-            val address = findViewById<EditText>(R.id.address_edt).text.toString()
-            val typeGroup = findViewById<RadioGroup>(R.id.type_grp)
-            val selectedId = typeGroup.checkedRadioButtonId
+        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
 
-            if (selectedId == -1) {
-                Log.d(TAG, "onCreate: no type selected")
-            } else {
-                val selectedType = findViewById<RadioButton>(selectedId).text.toString()
-                val restaurant = Restaurant(name, address, selectedId)
-
-                adapter.add(restaurant)
-
-                Log.d(TAG, "onCreate: created: ${restaurant.debug()}")
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager.currentItem = tab.position
             }
-        }
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+
+            }
+            override fun onTabReselected(tab: TabLayout.Tab) {
+
+            }
+        })
     }
 }
