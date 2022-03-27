@@ -22,10 +22,11 @@ class RestaurantDetails(private val listAdapter: ArrayAdapter<Restaurant>) : Fra
             val name = view.findViewById<EditText>(R.id.name_edt).text.toString()
             val address = view.findViewById<EditText>(R.id.address_edt).text.toString()
             val typeGroup = view.findViewById<RadioGroup>(R.id.type_grp)
+            val notes = view.findViewById<EditText>(R.id.notes_edt).text.toString()
             val selectedId = typeGroup.checkedRadioButtonId
 
             if (selectedId != -1) {
-                val restaurant = Restaurant(name, address, selectedId)
+                val restaurant = Restaurant(name, address, selectedId, notes)
                 listAdapter.add(restaurant)
             }
         }

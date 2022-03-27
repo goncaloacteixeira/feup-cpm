@@ -20,6 +20,11 @@ class RestaurantList(private val listAdapter: ArrayAdapter<Restaurant>) : Fragme
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val restaurantList = view.findViewById<ListView>(R.id.restaurants_list)
         restaurantList.adapter = listAdapter
+
+        restaurantList.setOnItemClickListener { adapterView, view, i, l ->
+            current = listAdapter.getItem(i)
+        }
+
         super.onViewCreated(view, savedInstanceState)
     }
 

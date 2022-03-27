@@ -3,11 +3,12 @@ package org.skdgt.lunchlist1
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.*
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+
+var current: Restaurant? = null
 
 class MainActivity : AppCompatActivity() {
     private val rests = arrayListOf<Restaurant>()
@@ -28,6 +29,20 @@ class MainActivity : AppCompatActivity() {
 
             return row
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        MenuInflater(this).inflate(R.menu.main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.toast) {
+            val message = current?.notes ?: "No Restaurant Selected"
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
